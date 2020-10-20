@@ -1,4 +1,7 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mall_example/config/application.dart';
+import 'package:flutter_mall_example/config/routers.dart';
 
 void main() {
   runApp(MyApp());
@@ -6,10 +9,16 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  MyApp() {
+    final Router router = Router();
+    Application.router = router;
+    Routers.configRouter(router);
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,7 +35,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      onGenerateRoute: Application.router.generator,
     );
   }
 }
@@ -102,7 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline4,
             ),
           ],
         ),
