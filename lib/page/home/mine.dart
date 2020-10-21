@@ -21,7 +21,7 @@ class _MineState extends State<MinePage> {
         children: <Widget>[
           IconTextArrow(
             Icons.reorder, "我的订单", Colors.deepPurpleAccent, 
-            callback: () => ToastUtil.showToast("msg"),),
+            callback: () => NavigationUtil.gotoLoginPage(context),),
           Divider(height: 1, color: Colors.grey,),
           IconTextArrow(Icons.reorder, "我的", Colors.deepPurpleAccent),
         ],

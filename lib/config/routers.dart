@@ -12,5 +12,6 @@ class Routers {
     router.notFoundHandler = notFoundHandler;
     router.define(root, handler: splashHandler);
     router.define(home, handler: homeHandler);
+    router.define(login, handler: loginHandler);
   }
 }

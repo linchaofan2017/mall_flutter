@@ -16,7 +16,7 @@ class IconTextArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _height ?? 40,
+      height: _height ?? 60,
       child: InkWell(
         onTap: _callback,
         child: Row(
