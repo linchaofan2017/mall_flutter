@@ -4,21 +4,17 @@ class IconTextArrow extends StatelessWidget {
   final IconData _iconData;
   final String _title;
   final Color _color;
-  VoidCallback _callback;
-  double _height;
+  final VoidCallback callback;
+  final double height;
 
-  IconTextArrow(this._iconData, this._title, this._color,
-      {double height, VoidCallback callback}) {
-    this._height = height;
-    this._callback = callback;
-  }
+  IconTextArrow(this._iconData, this._title, this._color, {this.height = 60, this.callback});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _height ?? 60,
+      height: height ?? 60,
       child: InkWell(
-        onTap: _callback,
+        onTap: callback,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
