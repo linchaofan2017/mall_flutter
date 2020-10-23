@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_mall_example/config/application.dart';
 import 'package:flutter_mall_example/config/routers.dart';
 
@@ -15,8 +16,14 @@ class MyApp extends StatelessWidget {
     final Router router = Router();
     Application.router = router;
     Routers.configRouter(router);
+    EasyLoading.instance
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..backgroundColor = Colors.black12
+      ..indicatorType = EasyLoadingIndicatorType.ring
+      ..indicatorColor = Colors.white
+      ..progressColor = Colors.white
+      ..textColor = Colors.black;
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +45,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: Application.router.generator,
+      builder: (BuildContext context, Widget child) => FlutterEasyLoading(
+        child: child,
+      ),
     );
   }
 }

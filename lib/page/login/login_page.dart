@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_mall_example/service/user_service.dart';
 import 'package:flutter_mall_example/utils/navigation_util.dart';
 import 'package:flutter_mall_example/utils/toast_util.dart';
 
@@ -11,6 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   final _loginKey = GlobalKey<FormState>();
   final _accountController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _userService = UserService();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,9 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.grey,
           onPressed: () => NavigationUtil.pop(context),
         ),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
         elevation: 0,
       ),
       body: Column(
@@ -106,7 +111,14 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     if (_loginKey.currentState.validate()) {
-      ToastUtil.showToast("验证通过");
+      _loginKey.currentState.save();
+      String account = _accountController.text;
+      String password = _passwordController.text;
+      EasyLoading.show();
+      _userService.login(account, password).then((value) {
+        EasyLoading.dismiss();
+        ToastUtil.showToast(value);
+      });
     } else {
       ToastUtil.showToast("验证失败");
       setState(() {

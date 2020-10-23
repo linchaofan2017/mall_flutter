@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_mall_example/utils/constants.dart';
 import 'package:flutter_mall_example/utils/navigation_util.dart';
 import 'package:flutter_mall_example/utils/toast_util.dart';

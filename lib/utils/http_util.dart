@@ -5,7 +5,7 @@ class HttpUtil {
   static HttpUtil get instance => _getHttpUtilInstance();
 
   static HttpUtil _httpUtil;
-  Dio dio;
+  Dio _dio;
 
   static HttpUtil _getHttpUtilInstance() {
     if (_httpUtil == null) {
@@ -19,16 +19,16 @@ class HttpUtil {
       connectTimeout: 10000,
       receiveTimeout: 10000,
     );
-    dio = Dio(options);
-    dio.interceptors
+    _dio = Dio(options);
+    _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       print("========================请求参数===================");
       print("url=${options.uri.toString()}");
       print("params=${options.data}");
-      dio.lock();
+      _dio.lock();
       String token = await TokenValue.getToken();
       options.headers["token"] = token;
-      dio.unlock();
+      _dio.unlock();
       return options;
     }, onResponse: ((Response e) {
       print("========================请求返回===================");
@@ -43,20 +43,33 @@ class HttpUtil {
   Future get(url, {Map<String, dynamic> parameters, Options options}) async {
     Response response;
     try {
-      response = await dio.get(url, queryParameters: parameters);
+      response = await _dio.get(url, queryParameters: parameters);
     } catch (e) {
       print(e);
     }
     return response?.data;
   }
 
-  Future post(url, {Map<String, dynamic> parameters, Options options}) async {
-    Response response;
+  Future postJson(url,
+      {Map<String, dynamic> parameters, Options options}) async {
     try {
-      response = await dio.post(url, queryParameters: parameters);
+      Response response = await _dio.post(url, data: parameters);
+      return response.data;
     } catch (e) {
       print(e);
+      return Future.error(e);
     }
-    return response?.data;
+  }
+
+  Future postForm(url,
+      {Map<String, dynamic> parameters, Options options}) async {
+    FormData formData = FormData.fromMap(parameters);
+    try {
+      Response response = await _dio.post(url, data: formData, options: options);
+      return response.data;
+    } catch (e) {
+      print(e);
+      return Future.error(e);
+    }
   }
 }
