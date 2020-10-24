@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_mall_example/model/user_model.dart';
 import 'package:flutter_mall_example/service/user_service.dart';
 import 'package:flutter_mall_example/utils/navigation_util.dart';
+import 'package:flutter_mall_example/utils/sharedpreferences_util.dart';
 import 'package:flutter_mall_example/utils/toast_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -23,9 +26,7 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.grey,
           onPressed: () => NavigationUtil.pop(context),
         ),
-        backgroundColor: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
       ),
       body: Column(
@@ -115,16 +116,23 @@ class _LoginPageState extends State<LoginPage> {
       String account = _accountController.text;
       String password = _passwordController.text;
       EasyLoading.show();
-      _userService.login(account, password).then((value) {
+      _userService.login(account, password, (UserModel userModel) {
         EasyLoading.dismiss();
-        ToastUtil.showToast(value);
+        _saveUserInfo(userModel);
+        ToastUtil.showToast("登录成功");
+        NavigationUtil.pop(context);
+      }, (String errorMsg) {
+        EasyLoading.dismiss();
+        ToastUtil.showToast(errorMsg);
       });
     } else {
       ToastUtil.showToast("验证失败");
-      setState(() {
-
-      });
+      setState(() {});
     }
+  }
+
+  Future _saveUserInfo(UserModel userModel) async {
+    TokenValue.saveToken(userModel.token);
   }
 
   String _validateAccount(String value) {

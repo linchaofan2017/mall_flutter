@@ -52,13 +52,8 @@ class HttpUtil {
 
   Future postJson(url,
       {Map<String, dynamic> parameters, Options options}) async {
-    try {
-      Response response = await _dio.post(url, data: parameters);
-      return response.data;
-    } catch (e) {
-      print(e);
-      return Future.error(e);
-    }
+    Response response = await _dio.post(url, data: parameters);
+    return response.data;
   }
 
   Future postForm(url,
